@@ -58,7 +58,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
   background-image:var(--backdrop);
   background-repeat:no-repeat;
   background-position:right bottom;
-  background-size:auto 46%;
+  background-size:auto 60%;
   opacity:.55;
   -webkit-mask-image:linear-gradient(to top, #000 55%, transparent 100%);
           mask-image:linear-gradient(to top, #000 55%, transparent 100%);
@@ -163,7 +163,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
   .card > *{position:static}
   .card::before{
     background-position:right bottom;
-    background-size:auto 42%;
+    background-size:auto 56%;
     opacity:.5;
     -webkit-mask-image:linear-gradient(to top, #000 55%, transparent 100%);
             mask-image:linear-gradient(to top, #000 55%, transparent 100%);
