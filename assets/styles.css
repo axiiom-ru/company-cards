@@ -132,7 +132,7 @@ button.primary{background:var(--navy); border-color:var(--navy); color:var(--pap
 button.primary:hover{background:var(--navy-deep); color:var(--paper)}
 .preview-pane{min-width:0; padding:18px; background:var(--card); border:1px solid var(--line-soft)}
 .preview-pane h2{margin:0 0 14px; font-family:var(--f-display); font-size:17px; color:var(--navy)}
-.preview-pane .card{width:794px; max-width:none; margin:0 auto}
+.preview-pane .card{max-width:100%; margin:0 auto; width:auto}
 .preview-pane #preview{overflow-x:auto}
 .status{margin-top:10px; min-height:16px; font-size:12px; color:var(--navy); white-space:pre-wrap}
 
