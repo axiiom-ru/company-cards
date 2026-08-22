@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Конструктор карточек</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="constructor">
+  <header class="topbar">
+    <div class="brand">Конструктор карточек</div>
+    <nav>
+      <a href="index.html">Карточки</a>
+      <a href="constructor.html" class="active">Конструктор</a>
+    </nav>
+  </header>
+  <main class="container constructor-layout">
+    <section class="form-pane">
+      <div class="toolbar">
+        <label>Компания
+          <select id="companySelect"></select>
+        </label>
+        <button id="newBtn" type="button">+ Новая</button>
+        <button id="deleteBtn" type="button" class="danger">Удалить</button>
+      </div>
+      <form id="cardForm" autocomplete="off"></form>
+      <div class="actions">
+        <button id="saveBtn" type="button" class="primary">Сохранить в репозиторий</button>
+        <button id="exportBtn" type="button">Экспорт JSON</button>
+        <details class="token-box">
+          <summary>Токен GitHub (для сохранения в репозиторий)</summary>
+          <input id="tokenInput" type="password" placeholder="github_pat_... или ghp_...">
+          <p class="hint">Хранится только в этой вкладке (sessionStorage) и не коммитится. Нужен scope <code>repo</code>.</p>
+        </details>
+        <pre id="status" class="status"></pre>
+      </div>
+    </section>
+    <section class="preview-pane">
+      <h2>Предпросмотр</h2>
+      <div id="preview"></div>
+    </section>
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>
