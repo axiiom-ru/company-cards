@@ -4,7 +4,7 @@ const DATA_PATH = 'data/companies.json?v=6';
 
 const BACKDROP = {
   axioma:"url('backdrop_axioma.png')",
-  atmosfera:"url('backdrop_atmosfera.png')"
+  atmosfera:"url('logo_atmosfera.svg')"
 };
 
 const FIELD_LABELS = {
@@ -87,7 +87,7 @@ function renderCard(c, opts){
       <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
     : '';
 
-  return `<div class="card" style="--backdrop:${BACKDROP[c.id]||BACKDROP.axioma}">
+  return `<div class="card" style="--backdrop:${BACKDROP[c.id]||BACKDROP.axioma}${c.id==='atmosfera'?';--backdrop-opacity:.42;--backdrop-size:auto 30%':''}">
     ${cardTop}
     ${gen.length ? `<div class="section"><h3>Общая информация</h3>${gen.join('')}</div>` : ''}
     ${codes ? `<div class="section"><h3>Коды</h3><div class="codes-grid">${codes}</div></div>` : ''}
@@ -101,7 +101,7 @@ function codeVal(v){ if(v && typeof v==='object') return esc(v.code)+(v.name? ' 
 
 function licenseRows(c, show){
   if(!show('licenses') || !c.licenses || !c.licenses.length) return '';
-  return c.licenses.map(l => {
+  const items = c.licenses.map(l => {
     const parts = [];
     if(l.number) parts.push(row('Номер', l.number));
     if(l.date)   parts.push(row('Дата', l.date));
@@ -109,6 +109,7 @@ function licenseRows(c, show){
     if(l.issuer) parts.push(row('Выдавший орган', l.issuer));
     return parts.join('');
   }).join('');
+  return `<div class="section"><h3>Лицензии</h3>${items}</div>`;
 }
 
 function row(k, v){ return `<div class="row"><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></div>`; }

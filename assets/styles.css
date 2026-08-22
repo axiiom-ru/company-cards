@@ -58,8 +58,8 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
   background-image:var(--backdrop);
   background-repeat:no-repeat;
   background-position:right bottom;
-    background-size:auto 42%;
-  opacity:.5;
+  background-size:var(--backdrop-size, auto 44%);
+  opacity:var(--backdrop-opacity, .5);
 }
 .card > *{position:relative; z-index:1}
 
@@ -159,6 +159,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
     width:210mm; height:290mm; padding:10mm 13mm; margin:0;
     border:none; box-shadow:none; overflow:hidden; border-radius:0;
   }
+  .preview-pane .card, .card-single .card{width:210mm; max-width:210mm; height:290mm}
   #cards,.card-single,.container,body,html,main{margin:0; padding:0}
   .card > *{position:static}
   .card::before{
