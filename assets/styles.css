@@ -58,7 +58,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
   background-image:var(--backdrop);
   background-repeat:no-repeat;
   background-position:right bottom;
-  background-size:auto 58%;
+    background-size:auto 42%;
   opacity:.5;
 }
 .card > *{position:relative; z-index:1}
@@ -163,7 +163,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
   .card > *{position:static}
   .card::before{
     background-position:right bottom;
-    background-size:auto 58%;
+  background-size:auto 44%;
     opacity:.5;
     -webkit-mask-image:none;
             mask-image:none;
