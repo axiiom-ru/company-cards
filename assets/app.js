@@ -1,6 +1,6 @@
 'use strict';
 
-const DATA_PATH = 'data/companies.json?v=5';
+const DATA_PATH = 'data/companies.json?v=6';
 
 const BACKDROP = {
   axioma:"url('backdrop_axioma.png')",
