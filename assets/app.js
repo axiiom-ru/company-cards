@@ -27,18 +27,11 @@ const STATE = { companies: [], current: null };
 function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ---------- рендер карточки (стиль PDF) ---------- */
+/* ---------- рендер карточки (референс AXIIOM) ---------- */
 function renderCard(c, opts){
   opts = opts || {all:true};
   const f = opts.fields;            // Set допустимых ключей или undefined
   const show = k => opts.all || (f && f.has(k));
-  const accent = c.accent || '#0d3a66';
-
-  // head-лента: контакты
-  const head = [];
-  if(show('phone') && c.contacts && c.contacts.phone) head.push(`<span>📞 ${esc(c.contacts.phone)}</span>`);
-  if(show('email') && c.contacts && c.contacts.email) head.push(`<span>✉ ${esc(c.contacts.email)}</span>`);
-  if(show('site')  && c.contacts && c.contacts.site)  head.push(`<span>🌐 ${esc(c.contacts.site)}</span>`);
 
   // общая информация
   const gen = [];
@@ -52,16 +45,15 @@ function renderCard(c, opts){
   const codes = BUILDER.codes.filter(k => show(k) && c.codes && c.codes[k]).map(k =>
     `<div class="code"><div class="k">${esc(FIELD_LABELS[k])}</div><div class="v">${codeVal(c.codes[k])}</div></div>`).join('');
 
-  // способ связи (повтор pills)
+  // способ связи
   const contacts = BUILDER.contacts.filter(k => show(k) && c.contacts && c.contacts[k]).map(k => {
     const v = c.contacts[k];
-    const inner = k==='site' ? `🌐 ${esc(v)}` : k==='email' ? `✉ ${esc(v)}` : `📞 ${esc(v)}`;
     const href = k==='site' ? esc(v) : k==='email' ? 'mailto:'+esc(v) : 'tel:'+esc(v.replace(/\D/g,''));
-    return `<a href="${href}" target="_blank" rel="noopener">${inner}</a>`;
+    return `<a href="${href}" target="_blank" rel="noopener"><span class="k">${esc(FIELD_LABELS[k])}</span><span class="v">${esc(v)}</span></a>`;
   }).join('');
 
   // банки
-  let banksHtml = '';
+  let banksInner = '';
   const banks = (opts.bank==='all' || opts.bank==null) ? (c.banks||[]) : [(c.banks||[])[opts.bank]];
   banks.forEach(b => {
     if(!b) return;
@@ -70,30 +62,40 @@ function renderCard(c, opts){
     if(show('bik') && b.bik) parts.push(row('БИК', b.bik));
     if(show('ks') && b.ks) parts.push(row('к/с', b.ks));
     if(!parts.length && !show('bankName')) return;
-    const logo = (b.logo && show('bankName')) ? `<img class="bank-logo" src="${esc(b.logo)}" alt="${esc(b.bankName||'банк')}">` : '';
     const name = (show('bankName') && b.bankName) ? `<div class="bank-name">${esc(b.bankName)}</div>` : '';
-    if(logo || name || parts.length)
-      banksHtml += `<div class="bank-block">${logo}${name}${parts.join('')}</div>`;
+    if(name || parts.length)
+      banksInner += `<div class="bank-block">${name}${parts.join('')}</div>`;
   });
 
-  const title = show('title') ? `<div class="card-title">Карточка ${esc(c.shortName||'')}</div><div class="card-rule"></div>` : '';
+  // шапка: контакты слева + логотип AXIIOM справа
+  const con = [];
+  if(show('site')  && c.contacts && c.contacts.site)  con.push(`<a href="${esc(c.contacts.site)}" target="_blank" rel="noopener">${esc(c.contacts.site)}</a>`);
+  if(show('email') && c.contacts && c.contacts.email) con.push(`<a href="mailto:${esc(c.contacts.email)}">${esc(c.contacts.email)}</a>`);
+  if(show('phone') && c.contacts && c.contacts.phone) con.push(`<a href="tel:${esc(c.contacts.phone.replace(/\D/g,''))}">${esc(c.contacts.phone)}</a>`);
+  const cardTop = show('title')
+    ? `<div class="card-top">
+        <div class="card-contacts">${con.join('<br>')}</div>
+        <img class="card-logo" src="assets/logo_axiom.png" alt="AXIIOM">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
+    : '';
 
-  return `<div class="card" style="--accent:${esc(accent)}">
-    ${head.length ? `<div class="card-head">${head.join('')}</div>` : ''}
-    ${title}
+  return `<div class="card">
+    ${cardTop}
     ${gen.length ? `<div class="section"><h3>Общая информация</h3>${gen.join('')}</div>` : ''}
     ${codes ? `<div class="section"><h3>Коды</h3><div class="codes-grid">${codes}</div></div>` : ''}
     ${contacts ? `<div class="section"><h3>Способ связи</h3><div class="contacts">${contacts}</div></div>` : ''}
-    ${banksHtml ? `<div class="section"><h3>Банковские реквизиты</h3>${banksHtml}</div>` : ''}
-    ${licensesHtml(c, show)}
+    ${banksInner ? `<div class="section"><h3>Банковские реквизиты</h3>${banksInner}</div>` : ''}
+    ${licenseRows(c, show)}
   </div>`;
 }
 
 function codeVal(v){ if(v && typeof v==='object') return esc(v.code)+(v.name? ' — '+esc(v.name):''); return esc(v); }
 
-function licensesHtml(c, show){
+function licenseRows(c, show){
   if(!show('licenses') || !c.licenses || !c.licenses.length) return '';
-  const items = c.licenses.map(l => {
+  return c.licenses.map(l => {
     const parts = [];
     if(l.number) parts.push(row('Номер', l.number));
     if(l.date)   parts.push(row('Дата', l.date));
@@ -101,7 +103,6 @@ function licensesHtml(c, show){
     if(l.issuer) parts.push(row('Выдавший орган', l.issuer));
     return parts.join('');
   }).join('');
-  return `<div class="section"><h3>Лицензии</h3>${items}</div>`;
 }
 
 function row(k, v){ return `<div class="row"><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></div>`; }
