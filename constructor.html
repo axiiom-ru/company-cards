@@ -6,7 +6,7 @@
   <title>Конструктор карточек</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body data-page="constructor">
+<body data-page="builder">
   <header class="topbar">
     <div class="brand">Конструктор карточек</div>
     <nav>
@@ -14,32 +14,18 @@
       <a href="constructor.html" class="active">Конструктор</a>
     </nav>
   </header>
-  <main class="container constructor-layout">
-    <section class="form-pane">
-      <div class="toolbar">
-        <label>Компания
-          <select id="companySelect"></select>
-        </label>
-        <button id="newBtn" type="button">+ Новая</button>
-        <button id="deleteBtn" type="button" class="danger">Удалить</button>
-      </div>
-      <form id="cardForm" autocomplete="off"></form>
-      <div class="actions">
-        <button id="saveBtn" type="button" class="primary">Сохранить в репозиторий</button>
-        <button id="exportBtn" type="button">Экспорт JSON</button>
-        <details class="token-box">
-          <summary>Токен GitHub (для сохранения в репозиторий)</summary>
-          <input id="tokenInput" type="password" placeholder="github_pat_... или ghp_...">
-          <p class="hint">Хранится только в этой вкладке (sessionStorage) и не коммитится. Нужен scope <code>repo</code>.</p>
-        </details>
-        <pre id="status" class="status"></pre>
-      </div>
+  <main class="container builder-layout">
+    <section class="controls">
+      <form id="builderForm" autocomplete="off"></form>
+      <div id="actions" class="actions"></div>
+      <pre id="status" class="status"></pre>
     </section>
     <section class="preview-pane">
-      <h2>Предпросмотр</h2>
+      <h2>Карточка</h2>
       <div id="preview"></div>
     </section>
   </main>
+  <footer class="foot">Данные — в <code>data/companies.json</code> (правит Sisyphus). Конструктор только собирает карточку: выбери компанию, банк и нужные поля, затем печатай или копируй.</footer>
   <script src="assets/app.js"></script>
 </body>
 </html>
