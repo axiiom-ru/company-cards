@@ -1,6 +1,6 @@
 'use strict';
 
-const DATA_PATH = 'data/companies.json?v=4';
+const DATA_PATH = 'data/companies.json?v=5';
 
 const FIELD_LABELS = {
   title:'Шапка «Карточка …»',
@@ -11,7 +11,7 @@ const FIELD_LABELS = {
   oktmo:'ОКТМО', okogu:'ОКОГУ', okved:'ОКВЭД',
   okfs:'ОКФС', okopf:'ОКОПФ',
   site:'Сайт', email:'E-mail', phone:'Телефон',
-  bankName:'Название банка', rs:'р/с', bik:'БИК', ks:'к/с',
+  bankName:'Название банка', bankInn:'ИНН банка', rs:'р/с', bik:'БИК', ks:'к/с',
   licenses:'Лицензии'
 };
 
@@ -19,7 +19,7 @@ const BUILDER = {
   general: ['title','fullName','legalAddress','actualAddress','director','registrationDate'],
   codes:   ['inn','kpp','ogrn','okpo','okato','oktmo','okogu','okved','okfs','okopf'],
   contacts:['site','email','phone'],
-  bank:    ['bankName','rs','bik','ks']
+  bank:    ['bankName','bankInn','rs','bik','ks']
 };
 
 const STATE = { companies: [], current: null };
@@ -58,6 +58,7 @@ function renderCard(c, opts){
   banks.forEach(b => {
     if(!b) return;
     const parts = [];
+    if(show('bankInn') && b.bankInn) parts.push(row('ИНН банка', b.bankInn));
     if(show('rs') && b.rs) parts.push(row('р/с', b.rs));
     if(show('bik') && b.bik) parts.push(row('БИК', b.bik));
     if(show('ks') && b.ks) parts.push(row('к/с', b.ks));
@@ -217,6 +218,7 @@ function onCopy(){
   banks.forEach(b => {
     if(!b) return;
     if(o.fields.has('bankName') && b.bankName) lines.push('Банк: ' + b.bankName);
+    if(o.fields.has('bankInn') && b.bankInn) lines.push('ИНН банка: ' + b.bankInn);
     if(o.fields.has('rs') && b.rs) lines.push('р/с: ' + b.rs);
     if(o.fields.has('bik') && b.bik) lines.push('БИК: ' + b.bik);
     if(o.fields.has('ks') && b.ks) lines.push('к/с: ' + b.ks);
