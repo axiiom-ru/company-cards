@@ -1,6 +1,6 @@
 'use strict';
 
-const DATA_PATH = 'data/companies.json';
+const DATA_PATH = 'data/companies.json?v=2';
 
 const FIELD_LABELS = {
   title:'Шапка «Карточка …»',
