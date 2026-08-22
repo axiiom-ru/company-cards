@@ -53,15 +53,15 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
   box-shadow:var(--shadow);
   padding:34px 40px 30px;
 }
-/* подложка: блеклый мраморный бюст справа, полупрозрачный, за текстом */
 .card::before{
   content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background-image:var(--backdrop);
   background-repeat:no-repeat;
   background-position:right bottom;
-  background-size:auto 108%;
-  opacity:.42;
-  mix-blend-mode:multiply;
+  background-size:auto 46%;
+  opacity:.55;
+  -webkit-mask-image:linear-gradient(to top, #000 55%, transparent 100%);
+          mask-image:linear-gradient(to top, #000 55%, transparent 100%);
 }
 .card > *{position:relative; z-index:1}
 
@@ -162,9 +162,11 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
   #cards,.card-single,.container,body,html,main{margin:0; padding:0}
   .card > *{position:static}
   .card::before{
-    background-position:right -12mm bottom -4mm;
-    background-size:auto 96%;
-    opacity:.4;
+    background-position:right bottom;
+    background-size:auto 42%;
+    opacity:.5;
+    -webkit-mask-image:linear-gradient(to top, #000 55%, transparent 100%);
+            mask-image:linear-gradient(to top, #000 55%, transparent 100%);
   }
   .card-logo{height:8mm}
   .card-rule{margin:8px 0 9px}

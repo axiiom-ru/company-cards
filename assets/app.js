@@ -2,6 +2,11 @@
 
 const DATA_PATH = 'data/companies.json?v=5';
 
+const BACKDROP = {
+  axioma:"url('backdrop_axioma.png')",
+  atmosfera:"url('backdrop_atmosfera.png')"
+};
+
 const FIELD_LABELS = {
   title:'Шапка «Карточка …»',
   fullName:'Полное наименование', legalAddress:'Юридический адрес',
@@ -82,7 +87,7 @@ function renderCard(c, opts){
       <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
     : '';
 
-  return `<div class="card">
+  return `<div class="card" style="--backdrop:${BACKDROP[c.id]||BACKDROP.axioma}">
     ${cardTop}
     ${gen.length ? `<div class="section"><h3>Общая информация</h3>${gen.join('')}</div>` : ''}
     ${codes ? `<div class="section"><h3>Коды</h3><div class="codes-grid">${codes}</div></div>` : ''}
