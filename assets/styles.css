@@ -20,8 +20,15 @@ body{
 .foot{text-align:center; color:var(--muted); padding:28px; font-size:13px}
 code{background:#f3f6f9; padding:1px 6px; border-radius:6px; font-size:12px}
 
-/* grid of cards */
-.cards-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:22px}
+/* selector of companies */
+.company-select{display:flex; align-items:center; gap:12px; margin-bottom:20px}
+.company-select label{font-size:13px; color:var(--muted)}
+.company-select select{
+  padding:9px 12px; background:#fff; color:var(--ink); font:inherit;
+  border:1px solid var(--line); border-radius:9px; min-width:240px;
+}
+/* single card view */
+.card-single{max-width:760px; margin:0 auto}
 
 /* company card — документный стиль */
 .card{

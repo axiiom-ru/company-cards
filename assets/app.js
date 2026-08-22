@@ -1,20 +1,23 @@
 'use strict';
 
-const DATA_PATH = 'data/companies.json?v=3';
+const DATA_PATH = 'data/companies.json?v=4';
 
 const FIELD_LABELS = {
   title:'Шапка «Карточка …»',
   fullName:'Полное наименование', legalAddress:'Юридический адрес',
   actualAddress:'Фактический адрес', director:'Генеральный директор',
+  registrationDate:'Дата регистрации',
   inn:'ИНН', kpp:'КПП', ogrn:'ОГРН', okpo:'ОКПО', okato:'ОКАТО',
   oktmo:'ОКТМО', okogu:'ОКОГУ', okved:'ОКВЭД',
+  okfs:'ОКФС', okopf:'ОКОПФ',
   site:'Сайт', email:'E-mail', phone:'Телефон',
-  bankName:'Название банка', rs:'р/с', bik:'БИК', ks:'к/с'
+  bankName:'Название банка', rs:'р/с', bik:'БИК', ks:'к/с',
+  licenses:'Лицензии'
 };
 
 const BUILDER = {
-  general: ['title','fullName','legalAddress','actualAddress','director'],
-  codes:   ['inn','kpp','ogrn','okpo','okato','oktmo','okogu','okved'],
+  general: ['title','fullName','legalAddress','actualAddress','director','registrationDate'],
+  codes:   ['inn','kpp','ogrn','okpo','okato','oktmo','okogu','okved','okfs','okopf'],
   contacts:['site','email','phone'],
   bank:    ['bankName','rs','bik','ks']
 };
@@ -43,10 +46,11 @@ function renderCard(c, opts){
   if(show('legalAddress') && c.legalAddress) gen.push(row('Юридический адрес', c.legalAddress));
   if(show('actualAddress') && c.actualAddress) gen.push(row('Фактический адрес', c.actualAddress));
   if(show('director') && c.director) gen.push(row('Генеральный директор', c.director));
+  if(show('registrationDate') && c.registrationDate) gen.push(row('Дата регистрации', c.registrationDate));
 
   // коды
   const codes = BUILDER.codes.filter(k => show(k) && c.codes && c.codes[k]).map(k =>
-    `<div class="code"><div class="k">${esc(FIELD_LABELS[k])}</div><div class="v">${esc(c.codes[k])}</div></div>`).join('');
+    `<div class="code"><div class="k">${esc(FIELD_LABELS[k])}</div><div class="v">${codeVal(c.codes[k])}</div></div>`).join('');
 
   // способ связи (повтор pills)
   const contacts = BUILDER.contacts.filter(k => show(k) && c.contacts && c.contacts[k]).map(k => {
@@ -81,7 +85,23 @@ function renderCard(c, opts){
     ${codes ? `<div class="section"><h3>Коды</h3><div class="codes-grid">${codes}</div></div>` : ''}
     ${contacts ? `<div class="section"><h3>Способ связи</h3><div class="contacts">${contacts}</div></div>` : ''}
     ${banksHtml ? `<div class="section"><h3>Банковские реквизиты</h3>${banksHtml}</div>` : ''}
+    ${licensesHtml(c, show)}
   </div>`;
+}
+
+function codeVal(v){ if(v && typeof v==='object') return esc(v.code)+(v.name? ' — '+esc(v.name):''); return esc(v); }
+
+function licensesHtml(c, show){
+  if(!show('licenses') || !c.licenses || !c.licenses.length) return '';
+  const items = c.licenses.map(l => {
+    const parts = [];
+    if(l.number) parts.push(row('Номер', l.number));
+    if(l.date)   parts.push(row('Дата', l.date));
+    if(l.type)   parts.push(row('Вид', l.type));
+    if(l.issuer) parts.push(row('Выдавший орган', l.issuer));
+    return parts.join('');
+  }).join('');
+  return `<div class="section"><h3>Лицензии</h3>${items}</div>`;
 }
 
 function row(k, v){ return `<div class="row"><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></div>`; }
@@ -89,7 +109,16 @@ function row(k, v){ return `<div class="row"><span class="k">${esc(k)}</span><sp
 /* ---------- просмотр (index) ---------- */
 async function initIndex(){
   const data = await (await fetch(DATA_PATH, {cache:'no-store'})).json();
-  document.getElementById('cards').innerHTML = data.companies.map(c => renderCard(c)).join('');
+  STATE.companies = data.companies;
+  const sel = document.getElementById('selCompany');
+  sel.innerHTML = STATE.companies.map(c => `<option value="${esc(c.id)}">${esc(c.shortName)}</option>`).join('');
+  sel.value = STATE.companies[0].id;            // по умолчанию первая в списке (Аксиома)
+  sel.addEventListener('change', renderIndexCard);
+  renderIndexCard();
+}
+function renderIndexCard(){
+  const c = STATE.companies.find(x => x.id === document.getElementById('selCompany').value);
+  document.getElementById('cards').innerHTML = c ? renderCard(c) : '';
 }
 
 /* ---------- конструктор (builder) ---------- */
@@ -177,7 +206,11 @@ function onCopy(){
   if(o.fields.has('legalAddress') && c.legalAddress) lines.push('Юридический адрес: ' + c.legalAddress);
   if(o.fields.has('actualAddress') && c.actualAddress) lines.push('Фактический адрес: ' + c.actualAddress);
   if(o.fields.has('director') && c.director) lines.push('Генеральный директор: ' + c.director);
-  BUILDER.codes.forEach(k => { if(o.fields.has(k) && c.codes && c.codes[k]) lines.push(FIELD_LABELS[k]+': ' + c.codes[k]); });
+  if(o.fields.has('registrationDate') && c.registrationDate) lines.push('Дата регистрации: ' + c.registrationDate);
+  BUILDER.codes.forEach(k => { if(o.fields.has(k) && c.codes && c.codes[k]) lines.push(FIELD_LABELS[k]+': ' + codeVal(c.codes[k])); });
+  if(o.fields.has('licenses') && c.licenses && c.licenses.length){
+    c.licenses.forEach(l => lines.push('Лицензия: ' + [l.number,l.date,l.type,l.issuer].filter(Boolean).join(' / ')));
+  }
   BUILDER.contacts.forEach(k => { if(o.fields.has(k) && c.contacts && c.contacts[k]) lines.push(FIELD_LABELS[k]+': ' + c.contacts[k]); });
   const banks = (o.bank==='all'||o.bank==null) ? (c.banks||[]) : [c.banks[o.bank]];
   banks.forEach(b => {
