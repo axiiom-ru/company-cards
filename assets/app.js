@@ -124,10 +124,45 @@ async function initIndex(){
   sel.value = STATE.companies[0].id;            // по умолчанию первая в списке (Аксиома)
   sel.addEventListener('change', renderIndexCard);
   renderIndexCard();
+  initIndexActions();
 }
 function renderIndexCard(){
   const c = STATE.companies.find(x => x.id === document.getElementById('selCompany').value);
   document.getElementById('cards').innerHTML = c ? renderCard(c) : '';
+}
+function initIndexActions(){
+  const act = document.getElementById('actions');
+  if(!act) return;
+  act.innerHTML = '';
+  act.appendChild(el('<button type="button" class="primary" id="printBtn">Печать / PDF</button>'));
+  act.appendChild(el('<button type="button" id="copyBtn">Копировать текст</button>'));
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+  document.getElementById('copyBtn').addEventListener('click', onCopyIndex);
+}
+function onCopyIndex(){
+  const c = STATE.companies.find(x => x.id === document.getElementById('selCompany').value);
+  if(!c) return;
+  const lines = [];
+  if(c.fullName) lines.push('Полное наименование: ' + c.fullName);
+  if(c.legalAddress) lines.push('Юридический адрес: ' + c.legalAddress);
+  if(c.actualAddress) lines.push('Фактический адрес: ' + c.actualAddress);
+  if(c.director) lines.push('Генеральный директор: ' + c.director);
+  if(c.registrationDate) lines.push('Дата регистрации: ' + c.registrationDate);
+  BUILDER.codes.forEach(k => { if(c.codes && c.codes[k]) lines.push(FIELD_LABELS[k]+': ' + codeVal(c.codes[k])); });
+  BUILDER.contacts.forEach(k => { if(c.contacts && c.contacts[k]) lines.push(FIELD_LABELS[k]+': ' + c.contacts[k]); });
+  (c.banks||[]).forEach(b => {
+    if(!b) return;
+    if(b.bankName) lines.push('Банк: ' + b.bankName);
+    if(b.bankInn) lines.push('ИНН банка: ' + b.bankInn);
+    if(b.rs) lines.push('р/с: ' + b.rs);
+    if(b.bik) lines.push('БИК: ' + b.bik);
+    if(b.ks) lines.push('к/с: ' + b.ks);
+  });
+  (c.licenses||[]).forEach(l => lines.push('Лицензия: ' + [l.number,l.date,l.type,l.issuer].filter(Boolean).join(' / ')));
+  navigator.clipboard.writeText(lines.join('\n')).then(
+    () => flash('Скопировано в буфер обмена'),
+    () => flash('Не удалось скопировать (нет прав у браузера)')
+  );
 }
 
 /* ---------- конструктор (builder) ---------- */

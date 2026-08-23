@@ -148,6 +148,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
 .status{margin-top:10px; min-height:16px; font-size:12px; color:var(--navy); white-space:pre-wrap}
 
 @media(max-width:720px){
+  .controls{position:static}
   .card{padding:20px 16px 22px}
   .card-top{flex-wrap:wrap; gap:14px}
   .card-contacts{font-size:11px}
