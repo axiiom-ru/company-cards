@@ -24,7 +24,8 @@ const BUILDER = {
   general: ['title','fullName','legalAddress','actualAddress','director','registrationDate'],
   codes:   ['inn','kpp','ogrn','okpo','okato','oktmo','okogu','okved','okfs','okopf'],
   contacts:['site','email','phone'],
-  bank:    ['bankName','bankInn','rs','bik','ks']
+  bank:    ['bankName','bankInn','rs','bik','ks'],
+  docs:    ['licenses']
 };
 
 const STATE = { companies: [], current: null };
@@ -149,8 +150,9 @@ async function initBuilder(){
   form.appendChild(selB);
 
   // поля
+  const GROUP_LABELS = { general:'Общая информация', codes:'Коды', contacts:'Способ связи', bank:'Банковские реквизиты', docs:'Лицензии и аккредитации' };
   Object.entries(BUILDER).forEach(([group, keys]) => {
-    const fs = el(`<fieldset><legend>${group==='general'?'Общая информация':group==='codes'?'Коды':group==='contacts'?'Способ связи':'Банковские реквизиты'}</legend></fieldset>`);
+    const fs = el(`<fieldset><legend>${GROUP_LABELS[group]||group}</legend></fieldset>`);
     keys.forEach(k => {
       const id = 'f_'+k;
       const lab = el(`<label class="chk" for="${id}"><input type="checkbox" id="${id}" data-key="${k}" checked> ${esc(FIELD_LABELS[k])}</label>`);
