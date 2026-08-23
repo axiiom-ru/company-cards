@@ -148,14 +148,15 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
 .status{margin-top:10px; min-height:16px; font-size:12px; color:var(--navy); white-space:pre-wrap}
 
 @media(max-width:720px){
-  .card{padding:22px 18px 24px}
-  .card-top{flex-wrap:wrap}
+  .card{padding:20px 16px 22px}
+  .card-top{flex-wrap:wrap; gap:14px}
   .card-contacts{font-size:11px}
-  .card-logo{height:28px}
-  .row,.contacts a{grid-template-columns:130px 1fr}
+  .card-logo{height:24px}
+  .row,.contacts a{grid-template-columns:minmax(96px,38%) 1fr; column-gap:10px}
   .codes-grid{grid-template-columns:1fr}
-  .code{grid-template-columns:100px 1fr}
-  .container{padding:22px 16px}
+  .code{grid-template-columns:minmax(88px,40%) 1fr}
+  .container{padding:18px 14px}
+  .card::before{background-size:auto 34%; opacity:.4}
 }
 
 /* ======== ПЕЧАТЬ: ровно одна страница A4 ======== */
