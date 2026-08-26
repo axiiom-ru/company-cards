@@ -83,7 +83,7 @@ function renderCard(c, opts){
     ? `<div class="card-top">
         <div class="card-contacts">${con.join('<br>')}</div>
         ${c.id === 'atmosfera'
-          ? `<span class="card-logo-text">${esc(c.nameEn || c.shortName)}</span>`
+          ? `<img class="card-logo" src="assets/logo_arental.svg" alt="ARENTAL">`
           : `<img class="card-logo" src="assets/logo_axiom.png" alt="AXIIOM">`}
       </div>
       <div class="card-rule"></div>
