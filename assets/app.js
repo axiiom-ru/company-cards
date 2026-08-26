@@ -4,7 +4,7 @@ const DATA_PATH = 'data/companies.json?v=7';
 
 const BACKDROP = {
   axioma:"url('backdrop_axioma.png')",
-  atmosfera:"url('backdrop_atmosfera.svg')"
+  atmosfera:"url('backdrop_atmosfera.svg?v=2')"
 };
 
 const FIELD_LABELS = {
@@ -90,7 +90,7 @@ function renderCard(c, opts){
       <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
     : '';
 
-  return `<div class="card" style="--backdrop:${BACKDROP[c.id]||BACKDROP.axioma}${c.id==='atmosfera'?';--backdrop-opacity:.3;--backdrop-size:auto 65%':''}">
+  return `<div class="card" style="--backdrop:${BACKDROP[c.id]||BACKDROP.axioma}${c.id==='atmosfera'?';--backdrop-opacity:.42;--backdrop-size:auto 15%':''}">
     ${cardTop}
     ${gen.length ? `<div class="section"><h3>Общая информация</h3>${gen.join('')}</div>` : ''}
     ${codes ? `<div class="section"><h3>Коды</h3><div class="codes-grid">${codes}</div></div>` : ''}
