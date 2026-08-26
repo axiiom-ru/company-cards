@@ -73,7 +73,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
 
 .card-rule{height:2px; background:var(--navy); margin:16px 0 18px}
 
-.card-title{font-family:var(--f-display); font-weight:600; font-size:24px; color:var(--navy); margin-bottom:6px}
+.card-title{font-family:var(--f-display); font-weight:500; font-size:24px; color:var(--navy); margin-bottom:6px}
 
 /* секции */
 .section{margin-top:14px}
