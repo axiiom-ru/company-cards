@@ -58,7 +58,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
   background-image:var(--backdrop);
   background-repeat:no-repeat;
   background-position:right bottom;
-  background-size:var(--backdrop-size, auto 44%);
+  background-size:var(--backdrop-size, auto 128mm);
   opacity:var(--backdrop-opacity, .5);
 }
 .card > *{position:relative; z-index:1}
