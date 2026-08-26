@@ -69,7 +69,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
 .card-contacts a{color:var(--muted); text-decoration:none}
 .card-contacts a:hover{color:var(--navy)}
 .card-logo{height:44px; width:auto; display:block}
-.card-logo-text{height:44px; line-height:44px; display:block; white-space:nowrap; font-family:'Lora', Georgia, serif; font-weight:600; color:var(--navy); font-size:63px}
+.card-logo-text{height:44px; line-height:44px; display:block; white-space:nowrap; font-family:'Lora', Georgia, serif; font-weight:500; color:var(--navy); font-size:63px}
 
 .card-rule{height:2px; background:var(--navy); margin:16px 0 18px}
 
