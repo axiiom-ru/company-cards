@@ -84,7 +84,7 @@ function renderCard(c, opts){
         <div class="card-contacts">${con.join('<br>')}</div>
         ${c.id === 'atmosfera'
           ? `<img class="card-logo" src="assets/logo_arental.svg?v=3" alt="ARENTAL">`
-          : `<img class="card-logo" src="assets/logo_axiom.png" alt="AXIIOM">`}
+          : `<img class="card-logo" src="assets/logo_axiom.svg?v=1" alt="AXIIOM">`}
       </div>
       <div class="card-rule"></div>
       <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
