@@ -69,6 +69,7 @@ code{font-family:var(--f-mono); font-size:.86em; background:var(--paper2); paddi
 .card-contacts a{color:var(--muted); text-decoration:none}
 .card-contacts a:hover{color:var(--navy)}
 .card-logo{height:44px; width:auto; display:block}
+.card-logo-text{height:44px; line-height:44px; display:block; white-space:nowrap; font-family:'Lora', Georgia, serif; font-weight:600; color:var(--navy); font-size:63px}
 
 .card-rule{height:2px; background:var(--navy); margin:16px 0 18px}
 
@@ -153,6 +154,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
   .card-top{flex-wrap:wrap; gap:14px}
   .card-contacts{font-size:11px}
   .card-logo{height:24px}
+  .card-logo-text{height:24px; line-height:24px; font-size:34px}
   .row,.contacts a{grid-template-columns:minmax(96px,38%) 1fr; column-gap:10px}
   .codes-grid{grid-template-columns:1fr}
   .code{grid-template-columns:minmax(88px,40%) 1fr}
@@ -185,6 +187,7 @@ button.primary:hover{background:var(--navy-deep); color:var(--paper)}
             mask-image:none;
   }
   .card-logo{height:8mm}
+  .card-logo-text{height:8mm; line-height:8mm; font-size:11.5mm}
   .card-rule{margin:8px 0 9px}
   .card-title{font-size:16pt}
   .section{margin-top:5px}

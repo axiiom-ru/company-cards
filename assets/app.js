@@ -82,7 +82,9 @@ function renderCard(c, opts){
   const cardTop = show('title')
     ? `<div class="card-top">
         <div class="card-contacts">${con.join('<br>')}</div>
-        <img class="card-logo" src="assets/logo_axiom.png" alt="AXIIOM">
+        ${c.id === 'atmosfera'
+          ? `<span class="card-logo-text">${esc(c.nameEn || c.shortName)}</span>`
+          : `<img class="card-logo" src="assets/logo_axiom.png" alt="AXIIOM">`}
       </div>
       <div class="card-rule"></div>
       <div class="card-title">Карточка ${esc(c.shortName||'')}</div>`
